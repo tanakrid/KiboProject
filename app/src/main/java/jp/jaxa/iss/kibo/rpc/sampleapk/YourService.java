@@ -45,6 +45,13 @@ public class YourService extends KiboRpcService {
         moveToWrapper(11.5, -3.75, 4.5, 0, 0, 0.707, -0.707);
         moveToWrapper(11.51, -5.7, 4.5, 0, 0, 0, 1); // adjust pos_x by increase 0.01 for closely with qr code
         pos_p3[0] = readQRCode(0);
+        //p1-2
+        moveToWrapper(11, -6, 5.54, 0, -0.7071068, 0, 0.7071068); // adjust pos_x by increase 0.01 for closely with qr code
+        pos_p3[1] = readQRCode(1);
+        //p1-3
+        moveToWrapper(11, -5.5, 4.34, 0, 0.7071068, 0, 0.7071068); // adjust pos_x by increase 0.01 for closely with qr code
+        pos_p3[2] = readQRCode(2);
+
 
         //        api.laserControl(true);
 //        moveToWrapper(Double.parseDouble(pos_p3[0]),
