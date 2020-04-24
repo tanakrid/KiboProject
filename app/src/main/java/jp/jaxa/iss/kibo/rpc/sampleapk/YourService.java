@@ -42,7 +42,8 @@ public class YourService extends KiboRpcService {
         api.judgeSendStart();
 
         moveToWrapper(11.5, -3.75, 4.5, 0, 0, 0.707, -0.707);
-        moveToWrapper(11.45, -5.7, 4.5, 0, 0, 0, 1); // adjust pos_x by reduce 0.05
+        moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
+        relativeMoveToWrapper(-0.05,0,0,0,0,0,0);
 
         testQRCodeReaderFunction(0);
 
@@ -74,6 +75,24 @@ public class YourService extends KiboRpcService {
         int loopCounter = 0;
         while(!result.hasSucceeded() || loopCounter < LOOP_MAX){
             result = api.moveTo(point, quaternion, true);
+            ++loopCounter;
+        }
+    }
+
+    private void relativeMoveToWrapper(double pos_x, double pos_y, double pos_z,
+                               double qua_x, double qua_y, double qua_z,
+                               double qua_w){
+
+        final int LOOP_MAX = 3;
+        final Point point = new Point(pos_x, pos_y, pos_z);
+        final Quaternion quaternion = new Quaternion((float)qua_x, (float)qua_y,
+                (float)qua_z, (float)qua_w);
+
+        Result result = api.relativeMoveTo(point, quaternion, true);
+
+        int loopCounter = 0;
+        while(!result.hasSucceeded() || loopCounter < LOOP_MAX){
+            result = api.relativeMoveTo(point, quaternion, true);
             ++loopCounter;
         }
     }
