@@ -44,8 +44,15 @@ public class YourService extends KiboRpcService {
         moveToWrapper(11.5, -3.75, 4.5, 0, 0, 0.707, -0.707);
         moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
         relativeMoveToWrapper(-0.05,0,0,0,0,0,0);
+        pos_p3[0] = readQRCode(0);
 
-        testQRCodeReaderFunction(0);
+        moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
+        relativeMoveToWrapper(0,0,-0.05,0,0,0,0);
+        pos_p3[1] = readQRCode(1);
+
+        moveToWrapper(11, -5.5, 4.33, 0, 0.7071068, 0, 0.7071068);
+        relativeMoveToWrapper(0,0,0.05,0,0,0,0);
+        pos_p3[2] = readQRCode(2);
 
         api.judgeSendFinishSimulation();
     }
@@ -123,7 +130,7 @@ public class YourService extends KiboRpcService {
             e.printStackTrace();
         }
 
-//        api.judgeSendDiscoveredQR(qrNumber, result.getText());
+        api.judgeSendDiscoveredQR(qrNumber, result.getText());
         return result.getText();
     }
 
