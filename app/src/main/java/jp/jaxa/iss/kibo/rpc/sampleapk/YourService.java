@@ -37,22 +37,23 @@ public class YourService extends KiboRpcService {
     @Override
     protected void runPlan1(){
 
-        String[] pos_p3 = new String[7];
+//        String[] pos_p3 = new String[7];
+        String pos_x, pos_y, pos_z, qua_x, qua_y, qua_z, qua_w;
 
         api.judgeSendStart();
 
         moveToWrapper(11.5, -3.75, 4.5, 0, 0, 0.707, -0.707);
         moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
         relativeMoveToWrapper(-0.05,0,0,0,0,0,0);
-        pos_p3[0] = readQRCode(0);
+        pos_x = readQRCode(0);
 
         moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
         relativeMoveToWrapper(0,0,-0.05,0,0,0,0);
-        pos_p3[1] = readQRCode(1);
+        pos_y = readQRCode(1);
 
         moveToWrapper(11, -5.5, 4.33, 0, 0.7071068, 0, 0.7071068);
         relativeMoveToWrapper(0,0,0.05,0,0,0,0);
-        pos_p3[2] = readQRCode(2);
+        pos_z = readQRCode(2);
 
         api.judgeSendFinishSimulation();
     }
