@@ -39,27 +39,29 @@ public class YourService extends KiboRpcService {
 
         api.judgeSendStart();
 
-        String pos_x = "";
-        String pos_y = "";
-        String pos_z = "";
-        String qua_x = "";
-        String qua_y = "";
-        String qua_z = "";
-        String qua_w = "";
+//        String pos_x = "";
+//        String pos_y = "";
+//        String pos_z = "";
+//        String qua_x = "";
+//        String qua_y = "";
+//        String qua_z = "";
+//        String qua_w = "";
 
+//        moveToWrapper(11, -5.5, 4.33, 0, 0.7071068, 0, 0.7071068);
+//        pos_z = saveToReadQRCode(2);
+//
+//        if (!pos_z.equals("")) {
+//            moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
+//            pos_x = saveToReadQRCode(0);
+//        }
+//
+//        if (!pos_x.equals("")) {
+//            moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
+//            pos_y = saveToReadQRCode(1);
+//        }
         moveToWrapper(11, -5.5, 4.33, 0, 0.7071068, 0, 0.7071068);
-        pos_z = saveToReadQRCode(2);
-
-        if (!pos_z.equals("")) {
-            moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
-            pos_x = saveToReadQRCode(0);
-        }
-
-        if (!pos_x.equals("")) {
-            moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
-            pos_y = saveToReadQRCode(1);
-        }
-
+        moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
+        moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
         api.judgeSendFinishSimulation();
     }
 
@@ -78,7 +80,9 @@ public class YourService extends KiboRpcService {
                                double qua_x, double qua_y, double qua_z,
                                double qua_w){
 
-        final int LOOP_MAX = 3;
+//        final int LOOP_MAX = 3;
+        final int LOOP_MAX = 1;
+
         final Point point = new Point(pos_x, pos_y, pos_z);
         final Quaternion quaternion = new Quaternion((float)qua_x, (float)qua_y,
                                                      (float)qua_z, (float)qua_w);
