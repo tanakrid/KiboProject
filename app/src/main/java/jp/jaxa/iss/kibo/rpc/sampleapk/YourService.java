@@ -44,16 +44,16 @@ public class YourService extends KiboRpcService {
 
         moveToWrapper(11.5, -3.75, 4.5, 0, 0, 0.707, -0.707);
         moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
-        relativeMoveToWrapper(-0.05,0,0,0,0,0,0);
-        pos_x = readQRCode(0);
+//        relativeMoveToWrapper(-0.05,0,0,0,0,0,0);
+        pos_x = saveToReadQRCode(0);
 
         moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
-        relativeMoveToWrapper(0,0,-0.05,0,0,0,0);
-        pos_y = readQRCode(1);
+//        relativeMoveToWrapper(0,0,-0.05,0,0,0,0);
+        pos_y = saveToReadQRCode(1);
 
         moveToWrapper(11, -5.5, 4.33, 0, 0.7071068, 0, 0.7071068);
-        relativeMoveToWrapper(0,0,0.05,0,0,0,0);
-        pos_z = readQRCode(2);
+//        relativeMoveToWrapper(0,0,0.05,0,0,0,0);
+        pos_z = saveToReadQRCode(2);
 
         api.judgeSendFinishSimulation();
     }
@@ -85,6 +85,20 @@ public class YourService extends KiboRpcService {
             result = api.moveTo(point, quaternion, true);
             ++loopCounter;
         }
+    }
+
+    private String saveToReadQRCode(int qrNumber){
+
+        String result = "";
+        final int MAX_LOOP = 3;
+        int count = 0;
+        result = readQRCode(qrNumber);
+        while( (result.equals("")) && (count < MAX_LOOP)){
+            result = readQRCode(qrNumber);
+            count++;
+        }
+
+        return result;
     }
 
     private void relativeMoveToWrapper(double pos_x, double pos_y, double pos_z,
