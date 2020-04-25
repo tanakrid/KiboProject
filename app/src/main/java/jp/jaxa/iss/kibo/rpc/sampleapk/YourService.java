@@ -59,6 +59,19 @@ public class YourService extends KiboRpcService {
             moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
             pos_y = saveToReadQRCode(1);
         }
+        if (!pos_y.equals("")){
+            moveToWrapper(10.30, -6.45 , 5, 0, 0, 0, 1);
+            moveToWrapper(11.5, -8, 5, 0, 0, 0, 1);
+            qua_y = saveToReadQRCode(4);
+        }
+        if (!qua_y.equals("")){
+            moveToWrapper(10.30, -7.5 , 4.7, 0, 0, 1, 0);
+            qua_x = saveToReadQRCode(3);
+        }
+        if (!qua_x.equals("")){
+            moveToWrapper(11, -7.7 , 5.55, 0, -0.7071068, 0, 0.7071068);
+            qua_z = saveToReadQRCode(5);
+        }
 //        moveToWrapper(11, -5.5, 4.33, 0, 0.7071068, 0, 0.7071068);
 //        moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
 //        moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
