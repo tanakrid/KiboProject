@@ -50,31 +50,34 @@ public class YourService extends KiboRpcService {
         moveToWrapper(11, -5.5, 4.33, 0, 0.7071068, 0, 0.7071068);
         pos_z = saveToReadQRCode(2);
 
-        if (!pos_z.equals("")) {
-            moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
-            pos_x = saveToReadQRCode(0);
-        }
+        moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
+        pos_x = saveToReadQRCode(0);
 
-        if (!pos_x.equals("")) {
-            moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
-            pos_y = saveToReadQRCode(1);
-        }
-        if (!pos_y.equals("")){
-            moveToWrapper(10.30, -6.45 , 5, 0, 0, 0, 1);
-            moveToWrapper(11.5, -8, 5, 0, 0, 0, 1);
-            qua_y = saveToReadQRCode(4);
-        }
-        if (!qua_y.equals("")){
-            moveToWrapper(10.30, -7.5 , 4.7, 0, 0, 1, 0);
-            qua_x = saveToReadQRCode(3);
-        }
-        if (!qua_x.equals("")){
-            moveToWrapper(11, -7.7 , 5.55, 0, -0.7071068, 0, 0.7071068);
-            qua_z = saveToReadQRCode(5);
-        }
-//        moveToWrapper(11, -5.5, 4.33, 0, 0.7071068, 0, 0.7071068);
-//        moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
-//        moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
+        moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
+        pos_y = saveToReadQRCode(1);
+
+        moveToWrapper(10.45, -6.2, 5.55, 0,0,0.707,-0.707);
+        moveToWrapper(10.45, -6.8, 5.55, 0, 0, 0, 1);
+        moveToWrapper(11.15, -6.8, 5.55, 0, 0, 0.707, -0.707);
+        moveToWrapper(11, -7.7, 5.55, 0, -0.7071068, 0, 0.7071068);
+        qua_z = saveToReadQRCode(5);
+
+        moveToWrapper(10.30, -7.5, 4.7, 0, 0, 1, 0);
+        qua_x = saveToReadQRCode(3);
+
+        moveToWrapper(11.5, -8, 5, 0, 0, 0, 1);
+        qua_y = saveToReadQRCode(4);
+        
+//        moveToWrapper(10.30, -6.45 , 5, 0, 0, 0, 1);
+//        moveToWrapper(11.5, -8, 5, 0, 0, 0, 1);
+//        qua_y = saveToReadQRCode(4);
+//
+//        moveToWrapper(10.30, -7.5 , 4.7, 0, 0, 1, 0);
+//        qua_x = saveToReadQRCode(3);
+//
+//        moveToWrapper(11, -7.7 , 5.55, 0, -0.7071068, 0, 0.7071068);
+//        qua_z = saveToReadQRCode(5);
+
         api.judgeSendFinishSimulation();
     }
 
@@ -92,8 +95,6 @@ public class YourService extends KiboRpcService {
     private void moveToWrapper(double pos_x, double pos_y, double pos_z,
                                double qua_x, double qua_y, double qua_z,
                                double qua_w){
-
-//        final int LOOP_MAX = 3;
         final int LOOP_MAX = 20;
 
         final Point point = new Point(pos_x, pos_y, pos_z);
@@ -121,24 +122,6 @@ public class YourService extends KiboRpcService {
         }
 
         return result;
-    }
-
-    private void relativeMoveToWrapper(double pos_x, double pos_y, double pos_z,
-                               double qua_x, double qua_y, double qua_z,
-                               double qua_w){
-
-        final int LOOP_MAX = 3;
-        final Point point = new Point(pos_x, pos_y, pos_z);
-        final Quaternion quaternion = new Quaternion((float)qua_x, (float)qua_y,
-                (float)qua_z, (float)qua_w);
-
-        Result result = api.relativeMoveTo(point, quaternion, true);
-
-        int loopCounter = 0;
-        while(!result.hasSucceeded() || loopCounter < LOOP_MAX){
-            result = api.relativeMoveTo(point, quaternion, true);
-            ++loopCounter;
-        }
     }
 
     public String readQRCode(int qrNumber){
@@ -169,23 +152,6 @@ public class YourService extends KiboRpcService {
 
         api.judgeSendDiscoveredQR(qrNumber, result.getText());
         return result.getText();
-    }
-
-
-    private void testQRCodeReaderFunction(int qrNumber){
-        String result = "";
-        result = readQRCode(qrNumber);
-        if (result.equals("")){
-            moveToWrapper(11, -5.7, 5, 0, 0, -0.7071068, 0.7071068);
-            moveToWrapper(11, -4.3, 5, 0, 0, -0.7071068, 0.7071068);
-            moveToWrapper(10.6, -4.3, 5, 0, 0, -0.7071068, 0.7071068);
-
-            api.judgeSendDiscoveredQR(5, result);
-        }else{
-            // success to decode qr code
-            moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
-            api.judgeSendDiscoveredQR(qrNumber, result);
-        }
     }
 
 }
