@@ -2,6 +2,8 @@ package jp.jaxa.iss.kibo.rpc.sampleapk;
 
 import android.graphics.Bitmap;
 
+import org.bytedeco.opencv.opencv_core.IplImage;
+import org.bytedeco.opencv.opencv_imgproc.CvMoments;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.objdetect.QRCodeDetector;
@@ -15,6 +17,7 @@ import gov.nasa.arc.astrobee.types.Quaternion;
 
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
+import com.google.zxing.Dimension;
 import com.google.zxing.FormatException;
 import com.google.zxing.LuminanceSource;
 import com.google.zxing.MultiFormatReader;
@@ -28,6 +31,19 @@ import com.google.zxing.qrcode.QRCodeReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+
+import static org.bytedeco.opencv.global.opencv_core.cvCreateImage;
+import static org.bytedeco.opencv.global.opencv_core.cvGetSize;
+import static org.bytedeco.opencv.global.opencv_core.cvInRangeS;
+import static org.bytedeco.opencv.global.opencv_core.cvReleaseImage;
+import static org.bytedeco.opencv.global.opencv_core.cvScalar;
+import static org.bytedeco.opencv.global.opencv_imgproc.CV_BGR2HSV;
+import static org.bytedeco.opencv.global.opencv_imgproc.CV_MEDIAN;
+import static org.bytedeco.opencv.global.opencv_imgproc.cvCvtColor;
+import static org.bytedeco.opencv.global.opencv_imgproc.cvGetCentralMoment;
+import static org.bytedeco.opencv.global.opencv_imgproc.cvGetSpatialMoment;
+import static org.bytedeco.opencv.global.opencv_imgproc.cvMoments;
+import static org.bytedeco.opencv.global.opencv_imgproc.cvSmooth;
 
 /**
  * Class meant to handle commands from the Ground Data System and execute them in Astrobee
@@ -173,6 +189,39 @@ public class YourService extends KiboRpcService {
             moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
             api.judgeSendDiscoveredQR(qrNumber, result);
         }
+    }
+
+    static Dimension getCoordinates(IplImage thresholdImage) {
+        int posX = 0;
+        int posY = 0;
+        CvMoments moments = new CvMoments();
+        cvMoments(thresholdImage, moments, 1);
+        // cv Spatial moment : Mji=sumx,y(I(x,y)•xj•yi)
+        // where I(x,y) is the intensity of the pixel (x, y).
+        double momX10 = cvGetSpatialMoment(moments, 1, 0); // (x,y)
+        double momY01 = cvGetSpatialMoment(moments, 0, 1);// (x,y)
+        double area = cvGetCentralMoment(moments, 0, 0);
+        posX = (int) (momX10 / area);
+        posY = (int) (momY01 / area);
+        return new Dimension(posX, posY);
+    }
+
+    static IplImage hsvThreshold(IplImage orgImg) {
+        int hueLowerR = 160;
+        int hueUpperR = 180;
+        // 8-bit, 3- color =(RGB)
+        IplImage imgHSV = cvCreateImage(cvGetSize(orgImg), 8, 3);
+        System.out.println(cvGetSize(orgImg));
+        cvCvtColor(orgImg, imgHSV, CV_BGR2HSV);
+        // 8-bit 1- color = monochrome
+        IplImage imgThreshold = cvCreateImage(cvGetSize(orgImg), 8, 1);
+        // cvScalar : ( H , S , V, A)
+        cvInRangeS(imgHSV, cvScalar(hueLowerR, 100, 100, 0), cvScalar(hueUpperR, 255, 255, 0), imgThreshold);
+        cvReleaseImage(imgHSV);
+//        cvSmooth();
+        cvSmooth(imgThreshold, imgThreshold, CV_MEDIAN, 13);
+        // save
+        return imgThreshold;
     }
 
 }
