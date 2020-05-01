@@ -53,7 +53,7 @@ public class YourService extends KiboRpcService {
         moveToWrapper(11, -6.8, 5.45, 0, 0, 0.7071068, -0.7071068, 6);
 
 
-        moveToWrapper(11, -7.7, 5.45, 0, -0.7071068, 0, 0.7071068, 7);
+        moveToWrapper(11, -7.7, 5.4, 0, -0.7071068, 0, 0.7071068, 7);
 
         moveToWrapper(10.5, -7.5, 4.7, 0, 0, 1, 0, 8);
 
