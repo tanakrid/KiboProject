@@ -79,7 +79,7 @@ public class YourService extends KiboRpcService {
     private void moveToWrapper(double pos_x, double pos_y, double pos_z,
                                double qua_x, double qua_y, double qua_z,
                                double qua_w, int number){
-        final int LOOP_MAX = 20;
+        final int LOOP_MAX = 3;
 
         final Point point = new Point(pos_x, pos_y, pos_z);
         final Quaternion quaternion = new Quaternion((float)qua_x, (float)qua_y,
@@ -102,7 +102,7 @@ public class YourService extends KiboRpcService {
     private String saveToReadQRCode(int qrNumber){
 
         String result = "";
-        final int MAX_LOOP = 30;
+        final int MAX_LOOP = 3;
         int count = 0;
         result = readQRCode(qrNumber);
         while( (result.equals("")) && (count < MAX_LOOP)){
