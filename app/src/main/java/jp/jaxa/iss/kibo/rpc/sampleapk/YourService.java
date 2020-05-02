@@ -1,11 +1,13 @@
 package jp.jaxa.iss.kibo.rpc.sampleapk;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.objdetect.QRCodeDetector;
 
+import gov.nasa.arc.astrobee.Kinematics;
 import gov.nasa.arc.astrobee.android.gs.MessageType;
 import jp.jaxa.iss.kibo.rpc.api.KiboRpcService;
 
@@ -39,44 +41,26 @@ public class YourService extends KiboRpcService {
 
         api.judgeSendStart();
 
-        String pos_x = "";
-        String pos_y = "";
-        String pos_z = "";
-        String qua_x = "";
-        String qua_y = "";
-        String qua_z = "";
-        String qua_w = "";
+        moveToWrapper(11, -5.5, 4.4, 0, 0.7071068, 0, 0.7071068, 1);
 
-        moveToWrapper(11, -5.5, 4.33, 0, 0.7071068, 0, 0.7071068);
-        pos_z = saveToReadQRCode(2);
+        moveToWrapper(11.5, -5.65, 4.55, 0, 0, 0, 1, 2);
 
-        moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
-        pos_x = saveToReadQRCode(0);
+        moveToWrapper(11, -6, 5.45, 0, -0.7071068, 0, 0.7071068, 3);
 
-        moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
-        pos_y = saveToReadQRCode(1);
 
-        moveToWrapper(10.45, -6.2, 5.55, 0,0,0.707,-0.707);
-        moveToWrapper(10.45, -6.8, 5.55, 0, 0, 0, 1);
-        moveToWrapper(11.15, -6.8, 5.55, 0, 0, 0.707, -0.707);
-        moveToWrapper(11, -7.7, 5.55, 0, -0.7071068, 0, 0.7071068);
-        qua_z = saveToReadQRCode(5);
+        moveToWrapper(10.5, -6.2, 5.45, 0, 0, 0.7071068, -0.7071068, 4);
+        moveToWrapper(10.5, -6.8, 5.45, 0, 0, 0.7071068, -0.7071068, 5);
+        moveToWrapper(11, -6.8, 5.45, 0, 0, 0.7071068, -0.7071068, 6);
 
-        moveToWrapper(10.30, -7.5, 4.7, 0, 0, 1, 0);
-        qua_x = saveToReadQRCode(3);
 
-        moveToWrapper(11.5, -8, 5, 0, 0, 0, 1);
-        qua_y = saveToReadQRCode(4);
-        
-//        moveToWrapper(10.30, -6.45 , 5, 0, 0, 0, 1);
-//        moveToWrapper(11.5, -8, 5, 0, 0, 0, 1);
-//        qua_y = saveToReadQRCode(4);
-//
-//        moveToWrapper(10.30, -7.5 , 4.7, 0, 0, 1, 0);
-//        qua_x = saveToReadQRCode(3);
-//
-//        moveToWrapper(11, -7.7 , 5.55, 0, -0.7071068, 0, 0.7071068);
-//        qua_z = saveToReadQRCode(5);
+        moveToWrapper(11, -7.7, 5.4, 0, -0.7071068, 0, 0.7071068, 7);
+
+        moveToWrapper(10.5, -7.5, 4.7, 0, 0, 1, 0, 8);
+
+        moveToWrapper(11.5, -8, 5, 0, 0, 0, 1, 9);
+
+
+        moveToWrapper(10.95, -9.3, 5.25, 0,0,0.707, -0.707, 10);
 
         api.judgeSendFinishSimulation();
     }
@@ -94,8 +78,8 @@ public class YourService extends KiboRpcService {
     // You can add your method
     private void moveToWrapper(double pos_x, double pos_y, double pos_z,
                                double qua_x, double qua_y, double qua_z,
-                               double qua_w){
-        final int LOOP_MAX = 20;
+                               double qua_w, int number){
+        final int LOOP_MAX = 3;
 
         final Point point = new Point(pos_x, pos_y, pos_z);
         final Quaternion quaternion = new Quaternion((float)qua_x, (float)qua_y,
@@ -108,12 +92,17 @@ public class YourService extends KiboRpcService {
             result = api.moveTo(point, quaternion, true);
             ++loopCounter;
         }
+
+        Kinematics kinematics = api.getTrustedRobotKinematics();
+        Point pos = kinematics.getPosition();
+
+        Log.i("dolphin", number + ". pos_x : " + pos.getX() + " pos_y : " + pos.getY() + " pos_z : " + pos.getZ());
     }
 
     private String saveToReadQRCode(int qrNumber){
 
         String result = "";
-        final int MAX_LOOP = 30;
+        final int MAX_LOOP = 3;
         int count = 0;
         result = readQRCode(qrNumber);
         while( (result.equals("")) && (count < MAX_LOOP)){
