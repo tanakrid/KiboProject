@@ -41,24 +41,24 @@ public class YourService extends KiboRpcService {
 
         api.judgeSendStart();
 
-        moveToWrapper(11, -5.5, 4.4, 0, 0.7071068, 0, 0.7071068, 1);
-        readQRCode(3);
+        moveToWrapper(11, -5.5, 4.35, 0, 0.7071068, 0, 0.7071068, 1);
+        saveToReadQRCode(3);
         moveToWrapper(11.5, -5.65, 4.55, 0, 0, 0, 1, 2);
-        readQRCode(1);
-        moveToWrapper(11, -6, 5.45, 0, -0.7071068, 0, 0.7071068, 3);
-        readQRCode(2);
+        saveToReadQRCode(1);
+        moveToWrapper(11, -6 , 5.45, 0, -0.7071068, 0, 0.7071068, 3);
+        saveToReadQRCode(2);
 
         moveToWrapper(10.5, -6.2, 5.45, 0, 0, 0.7071068, -0.7071068, 4);
         moveToWrapper(10.5, -6.8, 5.45, 0, 0, 0.7071068, -0.7071068, 5);
         moveToWrapper(11, -6.8, 5.45, 0, 0, 0.7071068, -0.7071068, 6);
 
 
-        moveToWrapper(11, -7.7, 5.4, 0, -0.7071068, 0, 0.7071068, 7);
-        readQRCode(6);
-        moveToWrapper(10.5, -7.5, 4.7, 0, 0, 1, 0, 8);
-        readQRCode(4);
+        moveToWrapper(11, -7.7, 5.45, 0, -0.7071068, 0, 0.7071068, 7);
+        saveToReadQRCode(6);
+        moveToWrapper(10.4, -7.5, 4.7, 0, 0, 1, 0, 8);
+        saveToReadQRCode(4);
         moveToWrapper(11.5, -8, 5, 0, 0, 0, 1, 9);
-        readQRCode(5);
+        saveToReadQRCode(5);
 
         moveToWrapper(10.95, -9.3, 5.25, 0,0,0.707, -0.707, 10);
 
@@ -132,12 +132,19 @@ public class YourService extends KiboRpcService {
         try {
             result = reader.decode(bitmap);
         } catch (ChecksumException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Log.i("dolphin-exception", e.getMessage());
         } catch (FormatException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Log.i("dolphin-exception", e.getMessage());
+
         } catch (NotFoundException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
+            Log.i("dolphin-exception", e.getMessage());
+
         }
+
+        Log.i("dolphin-result", result.getText());
 
         api.judgeSendDiscoveredQR(qrNumber, result.getText());
         return result.getText();
