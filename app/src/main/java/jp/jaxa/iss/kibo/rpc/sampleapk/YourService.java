@@ -78,6 +78,7 @@ public class YourService extends KiboRpcService {
 //        moveToWrapper(11, -5.5, 4.33, 0, 0.7071068, 0, 0.7071068);
 //        moveToWrapper(11.5, -5.7, 4.5, 0, 0, 0, 1);
 //        moveToWrapper(11, -6, 5.55, 0, -0.7071068, 0, 0.7071068);
+        findTarget(api.getBitmapNavCam());
         api.judgeSendFinishSimulation();
     }
 
@@ -190,7 +191,6 @@ public class YourService extends KiboRpcService {
             api.judgeSendDiscoveredQR(qrNumber, result);
         }
     }
-
     static Dimension getCoordinates(IplImage thresholdImage) {
         int posX = 0;
         int posY = 0;
@@ -205,23 +205,42 @@ public class YourService extends KiboRpcService {
         posY = (int) (momY01 / area);
         return new Dimension(posX, posY);
     }
+    //
+//    static IplImage hsvThreshold(IplImage orgImg) {
+//        int hueLowerR = 160;
+//        int hueUpperR = 180;
+//        // 8-bit, 3- color =(RGB)
+//        IplImage imgHSV = cvCreateImage(cvGetSize(orgImg), 8, 3);
+//        System.out.println(cvGetSize(orgImg));
+//        cvCvtColor(orgImg, imgHSV, CV_BGR2HSV);
+//        // 8-bit 1- color = monochrome
+//        IplImage imgThreshold = cvCreateImage(cvGetSize(orgImg), 8, 1);
+//        // cvScalar : ( H , S , V, A)
+//        cvInRangeS(imgHSV, cvScalar(hueLowerR, 100, 100, 0), cvScalar(hueUpperR, 255, 255, 0), imgThreshold);
+//        cvReleaseImage(imgHSV);
+////        cvSmooth();
+//        cvSmooth(imgThreshold, imgThreshold, CV_MEDIAN, 13);
+//        // save
+//        return imgThreshold;
+//    }
+    static void findTarget(Bitmap img){
+        IplImage img1,imghsv,imgbin;
+        int w = img.getHeight();
+        int h = img.getWidth();
+        IplImage iplImage = IplImage.create(w,h,8,4);
+        img.copyPixelsToBuffer(iplImage.getByteBuffer());
+        IplImage iplImageDest = IplImage.create(w, h, 8, 1);
 
-    static IplImage hsvThreshold(IplImage orgImg) {
-        int hueLowerR = 160;
-        int hueUpperR = 180;
-        // 8-bit, 3- color =(RGB)
-        IplImage imgHSV = cvCreateImage(cvGetSize(orgImg), 8, 3);
-        System.out.println(cvGetSize(orgImg));
-        cvCvtColor(orgImg, imgHSV, CV_BGR2HSV);
-        // 8-bit 1- color = monochrome
-        IplImage imgThreshold = cvCreateImage(cvGetSize(orgImg), 8, 1);
-        // cvScalar : ( H , S , V, A)
-        cvInRangeS(imgHSV, cvScalar(hueLowerR, 100, 100, 0), cvScalar(hueUpperR, 255, 255, 0), imgThreshold);
-        cvReleaseImage(imgHSV);
-//        cvSmooth();
-        cvSmooth(imgThreshold, imgThreshold, CV_MEDIAN, 13);
-        // save
-        return imgThreshold;
+        imghsv  = cvCreateImage(cvGetSize( iplImageDest), 8, 3);
+        imgbin = cvCreateImage(cvGetSize( iplImageDest), 8, 1);
+        cvCvtColor( iplImageDest, imghsv, CV_BGR2HSV);
+
+        cvInRangeS(imghsv, cvScalar( 40,150, 750, 0), cvScalar(80, 255, 255, 0), imgbin);
+        cvReleaseImage(imghsv);
+        cvReleaseImage(imgbin);
+
+        getCoordinates(imgbin);
+
     }
 
 }
