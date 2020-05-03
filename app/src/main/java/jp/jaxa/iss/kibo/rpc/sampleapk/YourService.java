@@ -42,11 +42,11 @@ public class YourService extends KiboRpcService {
         api.judgeSendStart();
 
         moveToWrapper(11, -5.5, 4.35, 0, 0.7071068, 0, 0.7071068, 1);
-        saveToReadQRCode(3);
-        moveToWrapper(11.5, -5.65, 4.55, 0, 0, 0, 1, 2);
-        saveToReadQRCode(1);
-        moveToWrapper(11, -6 , 5.45, 0, -0.7071068, 0, 0.7071068, 3);
         saveToReadQRCode(2);
+        moveToWrapper(11.5, -5.65, 4.55, 0, 0, 0, 1, 2);
+        saveToReadQRCode(0);
+        moveToWrapper(11, -6 , 5.45, 0, -0.7071068, 0, 0.7071068, 3);
+        saveToReadQRCode(1);
 
         moveToWrapper(10.5, -6.2, 5.45, 0, 0, 0.7071068, -0.7071068, 4);
         moveToWrapper(10.5, -6.8, 5.45, 0, 0, 0.7071068, -0.7071068, 5);
@@ -54,11 +54,11 @@ public class YourService extends KiboRpcService {
 
 
         moveToWrapper(11, -7.7, 5.45, 0, -0.7071068, 0, 0.7071068, 7);
-        saveToReadQRCode(6);
-        moveToWrapper(10.4, -7.5, 4.7, 0, 0, 1, 0, 8);
-        saveToReadQRCode(4);
-        moveToWrapper(11.5, -8, 5, 0, 0, 0, 1, 9);
         saveToReadQRCode(5);
+        moveToWrapper(10.4, -7.5, 4.7, 0, 0, 1, 0, 8);
+        saveToReadQRCode(3);
+        moveToWrapper(11.5, -8, 5, 0, 0, 0, 1, 9);
+        saveToReadQRCode(4);
 
         moveToWrapper(10.95, -9.3, 5.25, 0,0,0.707, -0.707, 10);
 
@@ -93,14 +93,14 @@ public class YourService extends KiboRpcService {
             ++loopCounter;
         }
 
-        Kinematics kinematics = api.getTrustedRobotKinematics();
-        Point pos = kinematics.getPosition();
-
-        Log.i("dolphin", number + ". pos_x : " + pos.getX() + " pos_y : " + pos.getY() + " pos_z : " + pos.getZ());
+//        Kinematics kinematics = api.getTrustedRobotKinematics();
+//        Point pos = kinematics.getPosition();
+//
+//        Log.i("dolphin", number + ". pos_x : " + pos.getX() + " pos_y : " + pos.getY() + " pos_z : " + pos.getZ());
     }
 
     private String saveToReadQRCode(int qrNumber){
-
+        Log.i("dolphin", "start reading qr code");
         String result = "";
         final int MAX_LOOP = 3;
         int count = 0;
@@ -108,8 +108,9 @@ public class YourService extends KiboRpcService {
         while( (result.equals("")) && (count < MAX_LOOP)){
             result = readQRCode(qrNumber);
             count++;
+            Log.i("dolphin", "read qrcode " + count + " times");
         }
-
+        Log.i("dolphin", "stop reading qr code");
         return result;
     }
 
